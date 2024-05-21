@@ -19,17 +19,13 @@ public class ProdutoRepository {
 
     // findBy
     public Produto findById(int id) {
-        Produto produtoEncontrado = new Produto();
-        this.listaProdutos.forEach(produto -> {
+        for (Produto produto : this.listaProdutos) {
             if (produto.getId() == id) {
-                produtoEncontrado.setId(produto.getId());
-                produtoEncontrado.setNome(produto.getNome());
-                produtoEncontrado.setPreco(produto.getPreco());
-                produtoEncontrado.setStatus(produto.isStatus());
+                return produto;
             }
-        });
-        return produtoEncontrado;
-    };
+        }
+        return null;
+    }
 
     // create
     public Produto create(Produto produto) {
@@ -41,13 +37,15 @@ public class ProdutoRepository {
     // alter
 
     public Produto alter(Produto produto) {
-        Produto produtoEncontrado = this.findById(produto.getId());
+//        Produto produtoEncontrado = this.findById(produto.getId());
+//
+//        if (produtoEncontrado == null) {
+//            return null;
+//        }
 
-        if (produtoEncontrado.getId() == 0) {
-            return null;
-        }
+        Produto produtoAtual = findById(produto.getId());
 
-        this.listaProdutos.remove(produtoEncontrado);
+        this.listaProdutos.remove(produtoAtual);
         this.listaProdutos.add(produto);
 
         return produto;
@@ -58,7 +56,7 @@ public class ProdutoRepository {
     public Produto delete(int id) {
         Produto produtoEncontrado = this.findById(id);
 
-        if (produtoEncontrado.getId() == 0) {
+        if (produtoEncontrado == null) {
             return null;
         }
 
